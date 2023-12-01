@@ -1,20 +1,18 @@
 const parseInput = (input: string) => {
-	return input
-		.trim()
-		.split('\n')
-		.map((v) => +v)
+	return input.trim().split('\n')
+	// .map((v) => +v)
 }
 
-export const getPart1Answer = (input: string): string | number => {
+export const getPart1Answer: Answer = (input: string): string | number => {
 	const parsed = parseInput(input)
 	return ''
 }
 
-export const part1Examples = [[``, '']]
+export const part1Examples: Example[] = [[``, '']]
 
-export const getPart2Answer = (input: string): string | number => {
+export const getPart2Answer: Answer = (input: string): string | number => {
 	const parsed = parseInput(input)
 	return ''
 }
 
-export const part2Examples = [[``, '']]
+export const part2Examples: Example[] = [[``, '']]
