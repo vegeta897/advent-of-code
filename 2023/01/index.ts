@@ -41,25 +41,15 @@ export const getPart2Answer: Answer = (input) => {
 	const parsed = parseInput(input)
 	let sum = 0
 	for (const line of parsed) {
-		let firstDigit: number
-		let firstDigitIndex = Infinity
+		const foundDigits: number[] = []
 		digits.forEach((d) => {
-			const digitIndex = line.indexOf(d.toString())
-			if (digitIndex >= 0 && digitIndex < firstDigitIndex) {
-				firstDigitIndex = digitIndex
-				firstDigit = getDigitValue(d)
-			}
+			const firstDigitIndex = line.indexOf(d.toString())
+			if (firstDigitIndex >= 0) foundDigits[firstDigitIndex] = getDigitValue(d)
+			const lastDigitIndex = line.lastIndexOf(d.toString())
+			if (lastDigitIndex >= 0) foundDigits[lastDigitIndex] = getDigitValue(d)
 		})
-		let lastDigit: number
-		let lastDigitIndex = -1
-		digits.forEach((d) => {
-			const digitIndex = line.lastIndexOf(d.toString())
-			if (digitIndex >= 0 && digitIndex > lastDigitIndex) {
-				lastDigitIndex = digitIndex
-				lastDigit = getDigitValue(d)
-			}
-		})
-		sum += firstDigit! * 10 + lastDigit!
+		const condensed = foundDigits.filter((v) => v)
+		sum += condensed[0] * 10 + condensed[condensed.length - 1]
 	}
 	return sum
 }
