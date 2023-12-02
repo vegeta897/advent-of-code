@@ -8,11 +8,11 @@ export const getPart1Answer: Answer = (input: string): string | number => {
 	return ''
 }
 
-export const part1Examples: Example[] = [[``, '']]
+export const part1Examples: Example[] = [[``, 0]]
 
 export const getPart2Answer: Answer = (input: string): string | number => {
 	const parsed = parseInput(input)
 	return ''
 }
 
-export const part2Examples: Example[] = [[``, '']]
+export const part2Examples: Example[] = [[``, 0]]

@@ -8,4 +8,5 @@ test('solutions', () => {
 	console.log('Part 1 answer:', getPart1Answer(inputText))
 	// part2Examples.forEach(([input, answer]) => expect(getPart2Answer(input)).toBe(answer))
 	console.log('Part 2 answer:', getPart2Answer(inputText))
+	expect(1).toBe(1) // Ensures that console logs always run
 })
