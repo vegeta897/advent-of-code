@@ -12,38 +12,36 @@ function getGearNumbers(input: string[]) {
 		const line = input[y]
 		for (let x = 0; x < line.length; x++) {
 			const char = line[x]
-			if (isNum(char)) {
-				// Number
-				let numberString = char
-				const startX = x
-				let endX = x + 1
-				while (isNum(line[endX])) {
-					numberString += line[endX]
-					endX++
-				}
-				let isPartNumber = false
-				for (let ny = Math.max(0, y - 1); ny <= y + 1; ny++) {
-					if (isPartNumber) break
-					if (!input[ny]) continue
-					for (let nx = startX - 1; nx <= endX; nx++) {
-						const nChar = input[ny][nx]
-						if (nChar === undefined) continue
-						if (!isNum(nChar) && nChar !== '.') {
-							isPartNumber = true
-							break
-						}
+			if (!isNum(char)) continue
+			let numberString = char
+			const startX = x
+			let endX = x + 1
+			while (isNum(line[endX])) {
+				numberString += line[endX]
+				endX++
+			}
+			let isPartNumber = false
+			for (let ny = Math.max(0, y - 1); ny <= y + 1; ny++) {
+				if (isPartNumber) break
+				if (!input[ny]) continue
+				for (let nx = startX - 1; nx <= endX; nx++) {
+					const nChar = input[ny][nx]
+					if (nChar === undefined) continue
+					if (!isNum(nChar) && nChar !== '.') {
+						isPartNumber = true
+						break
 					}
 				}
-				if (isPartNumber) {
-					gearNumbers.push({
-						y,
-						startX,
-						endX: endX - 1,
-						number: parseInt(numberString),
-					})
-				}
-				x = endX
 			}
+			if (isPartNumber) {
+				gearNumbers.push({
+					y,
+					startX,
+					endX: endX - 1,
+					number: parseInt(numberString),
+				})
+			}
+			x = endX
 		}
 	}
 	return gearNumbers
