@@ -36,23 +36,19 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11`,
 
 export const getPart2Answer: Answer = (input: string): string | number => {
 	const parsed = parseInput(input)
-	const cardWins: [number, number][] = []
-	for (let c = 0; c < parsed.length; c++) {
-		const myWins = parsed[c][1].filter((n) => parsed[c][0].includes(n))
-		cardWins[c] = [myWins.length, 0]
-	}
-	let totalExtras = 0
-	for (let w = 0; w < cardWins.length; w++) {
-		const [wins, extras] = cardWins[w]
+	const cards: [wins: number, count: number][] = parsed.map((c) => [
+		c[1].filter((n) => c[0].includes(n)).length,
+		1,
+	])
+	for (let w = 0; w < cards.length; w++) {
+		const [wins, count] = cards[w]
 		if (wins === 0) continue
 		for (let e = 1; e <= wins; e++) {
-			if (w + e > cardWins.length - 1) break
-			const addedExtras = extras + 1
-			cardWins[w + e][1] += addedExtras
-			totalExtras += addedExtras
+			if (w + e > cards.length - 1) break
+			cards[w + e][1] += count
 		}
 	}
-	return parsed.length + totalExtras
+	return cards.map(([, w]) => w).reduce((a, c) => a + c, 0)
 }
 
 export const part2Examples: Example[] = [[part1Examples[0][0], 30]]
