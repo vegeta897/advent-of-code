@@ -1,12 +1,15 @@
 {
-  "name": "advent-of-code",
-  "module": "index.ts",
-  "type": "module",
-  "devDependencies": {
-    "bun-types": "latest",
-    "prettier": "^3.1.0"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  }
+	"name": "advent-of-code",
+	"module": "index.ts",
+	"type": "module",
+	"scripts": {
+		"day": "bun scripts/day.ts"
+	},
+	"devDependencies": {
+		"bun-types": "latest",
+		"prettier": "^3.1.0"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	}
 }
