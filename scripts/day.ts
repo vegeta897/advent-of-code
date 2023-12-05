@@ -41,4 +41,6 @@ try {
 	}
 } catch (_) {}
 
-Bun.spawn(['bun', 'test', '--watch', dayPath])
+Bun.spawn(['bun', 'test', '--watch', dayPath], {
+	stdio: ['inherit', 'inherit', 'inherit'], // Forward console logs
+})
