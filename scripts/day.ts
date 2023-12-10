@@ -27,19 +27,18 @@ if (isNaN(year) || year < 2015) exitWithError('Invalid year number')
 const dayPadded = `${day}`.padStart(2, '0')
 const dayPath = path.join(`${year}`, dayPadded)
 
+// Create folder if it doesn't exist yet and copy files
 try {
-	// Create folder if it doesn't exist yet and copy files
-	const createdDir = fs.mkdirSync(dayPath, { recursive: true })
-	if (createdDir) {
-		console.log('Created directory', dayPath)
-		const glob = new Bun.Glob('*')
-		for await (const fileName of glob.scan({ cwd: 'template' })) {
-			console.log('Copying', fileName, 'to', dayPath)
-			const file = Bun.file(path.join('template', fileName))
-			await Bun.write(path.join(dayPath, fileName), file)
-		}
+	fs.readdirSync(dayPath)
+} catch (_) {
+	console.log('Creating folder', dayPath)
+	const glob = new Bun.Glob('*')
+	for await (const fileName of glob.scan({ cwd: 'template' })) {
+		console.log('Copying', fileName, 'to', dayPath)
+		const file = Bun.file(path.join('template', fileName))
+		await Bun.write(path.join(dayPath, fileName), file)
 	}
-} catch (_) {}
+}
 
 Bun.spawn(['bun', 'test', '--watch', dayPath], {
 	stdio: ['inherit', 'inherit', 'inherit'], // Forward console logs
