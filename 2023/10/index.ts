@@ -36,10 +36,10 @@ const neighborXYs = [
 const connections = {
 	'|': [DIR.up, DIR.down],
 	'-': [DIR.left, DIR.right],
-	L: [DIR.up, DIR.right],
-	J: [DIR.up, DIR.left],
+	'L': [DIR.up, DIR.right],
+	'J': [DIR.up, DIR.left],
 	'7': [DIR.down, DIR.left],
-	F: [DIR.down, DIR.right],
+	'F': [DIR.down, DIR.right],
 }
 
 const toGrid = (x: number, y: number) => `${x}:${y}`
@@ -104,10 +104,10 @@ LJ...`,
 const pipeSides = {
 	'|': [[[DIR.left], [DIR.right]], , [[DIR.right], [DIR.left]]],
 	'-': [, [[DIR.up], [DIR.down]], , [[DIR.down], [DIR.up]]],
-	L: [, , [, [DIR.left, DIR.down]], [[DIR.down, DIR.left]]],
-	J: [, [, [DIR.down, DIR.right]], [[DIR.down, DIR.right], []]],
+	'L': [, , [, [DIR.left, DIR.down]], [[DIR.down, DIR.left]]],
+	'J': [, [, [DIR.down, DIR.right]], [[DIR.down, DIR.right], []]],
 	'7': [[, [DIR.up, DIR.right]], [[DIR.up, DIR.right]], ,],
-	F: [[[DIR.left, DIR.up]], , , [, [DIR.left, DIR.up]]],
+	'F': [[[DIR.left, DIR.up]], , , [, [DIR.left, DIR.up]]],
 }
 
 export const getPart2Answer: Answer = (input: string): string | number => {
