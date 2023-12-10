@@ -12,7 +12,10 @@ export async function logAnswer(path: string, part: 1 | 2, answer: string) {
 		return // Already logged
 	}
 	const now = new Date()
-	const timestamp = now.toLocaleDateString() + ' ' + now.toLocaleTimeString()
+	const timestamp =
+		now.toLocaleDateString('en-us', { timeZone: 'EST' }) +
+		' ' +
+		now.toLocaleTimeString('en-us', { timeZone: 'EST' })
 	const logEntry = `${timestamp} | Part ${part} = ${answer}\n`
 	Bun.write(`${path}/answers.log`, answerLog + logEntry)
 }
