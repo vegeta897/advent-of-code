@@ -65,7 +65,7 @@ function getTotalArrangements(puzzles: ReturnType<typeof parseInput>) {
 				const remainingPicross = '#' + picross.slice(charIndex + 1)
 				const cacheKey = `${remainingPicross}:${groups
 					.slice(gIndex)
-					.join(',')}:${brokenLeft}:${spacesLeft}`
+					.join(',')}:${brokenLeft}`
 				const cached = cache.get(cacheKey) ?? -1
 				if (cached >= 0) return cached // the key to success
 				for (let n = 1; n < groupSize; n++) {
