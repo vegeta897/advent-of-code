@@ -68,42 +68,24 @@ function rotateMap(map: string[], size: number) {
 export const getPart2Answer: Answer = (input: string): string | number => {
 	const { mapByColumn, size } = parseInput(input)
 	let mapByColumnString = mapByColumn.map((col) => col.join(''))
-	const mapCache: Map<string, string[]> = new Map()
-	const mapCacheKeys: string[] = []
-	let highestMapCacheKeyIndex = 0
-	let highestMapCacheKeyIndexCycle = -1
-	let highestMatched = false
-	let resumeR = -1
+	const mapCacheCycle: Map<string, number> = new Map()
+	let cycleFound = false
 	const columnCache: Map<string, string> = new Map()
 	const cycles = 1000000000
 	for (let i = 0; i < cycles; i++) {
-		let startR = 0
-		if (resumeR >= 0) {
-			startR = resumeR
-			resumeR = -1
-		}
-		for (let r = startR; r < 4; r++) {
+		for (let r = 0; r < 4; r++) {
 			const mapCacheKey = mapByColumnString.join('')
-			const cachedMap = mapCache.get(mapCacheKey)
-			if (cachedMap) {
-				if (!highestMatched) {
-					const mapCacheKeyIndex = mapCacheKeys.indexOf(mapCacheKey)
-					if (mapCacheKeyIndex > highestMapCacheKeyIndex) {
-						highestMapCacheKeyIndex = mapCacheKeyIndex
-						highestMapCacheKeyIndexCycle = i
-					} else if (mapCacheKeyIndex === highestMapCacheKeyIndex) {
-						const superCycleLength = i - highestMapCacheKeyIndexCycle
-						highestMatched = true
-						highestMapCacheKeyIndexCycle = i
-						const superCyclesLeft = Math.floor((cycles - i) / superCycleLength)
-						const skipCycles = superCyclesLeft * superCycleLength - 1
-						i += skipCycles
-						resumeR = r
-						break
-					}
+			const cachedMapCycle = mapCacheCycle.get(mapCacheKey)
+			if (cachedMapCycle !== undefined) {
+				if (!cycleFound && r === 0) {
+					// r === 0 constraint makes it sliiiightly less efficient, but cleaner code
+					cycleFound = true
+					const superCycleLength = i - cachedMapCycle
+					const superCyclesLeft = Math.floor((cycles - i) / superCycleLength)
+					const skipCycles = superCyclesLeft * superCycleLength - 1
+					i += skipCycles
+					break
 				}
-				mapByColumnString = cachedMap
-				continue
 			}
 			for (let c = 0; c < size; c++) {
 				const columnString = mapByColumnString[c]
@@ -128,19 +110,14 @@ export const getPart2Answer: Answer = (input: string): string | number => {
 				mapByColumnString[c] = rolledColumn
 			}
 			const rotatedMap = rotateMap(mapByColumnString, size)
-			mapCache.set(mapCacheKey, rotatedMap)
-			mapCacheKeys.push(mapCacheKey)
+			mapCacheCycle.set(mapCacheKey, i)
 			mapByColumnString = rotatedMap
 		}
 	}
-	return weighMap(mapByColumnString)
-}
-
-function weighMap(map: string[]) {
 	let totalLoad = 0
-	for (const column of map) {
-		for (let c = 0; c < map.length; c++) {
-			if (column[c] === 'O') totalLoad += map.length - c
+	for (const column of mapByColumnString) {
+		for (let c = 0; c < size; c++) {
+			if (column[c] === 'O') totalLoad += size - c
 		}
 	}
 	return totalLoad

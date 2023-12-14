@@ -5,3 +5,5 @@ I had suspected from the start that the map would fall into a cycle, but was too
 I don't really feel like cleaning up that hacky code right now.
 
 Rank #5009
+
+Update: I cleaned up some code; I was making it more complex than it needed to be.
