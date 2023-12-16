@@ -104,7 +104,7 @@ export const part1Examples: Example[] = [
 
 export const getPart2Answer: Answer = (input: string): string | number => {
 	const { map, size } = parseInput(input)
-	const possibleBeams: [x: number, y: number, dir: DIR][] = []
+	const possibleBeams: Beam[] = []
 	for (let v = 0; v < size; v++) {
 		possibleBeams.push([-1, v, DIR.right])
 		possibleBeams.push([size, v, DIR.left])
