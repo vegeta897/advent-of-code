@@ -86,6 +86,7 @@ function getTotalArea(lines: ReturnType<typeof parseInput>) {
 	let prevWaterRanges: Range[] = [[waterStops[0], waterStops[1]]]
 	for (const hLineY of hLineYs) {
 		const height = hLineY - waterfallY + 1
+		// Add up area of current waterfalls
 		for (let w = 1; w < waterStops.length; w += 2) {
 			const start = waterStops[w - 1]
 			const stop = waterStops[w]
@@ -93,6 +94,7 @@ function getTotalArea(lines: ReturnType<typeof parseInput>) {
 			const area = width * height
 			totalArea += area
 		}
+		// Use horizontal lines to change waterfalls
 		const stops = hStopsByY.get(hLineY)!.sort((a, b) => a - b)
 		for (let s = 0; s < stops.length; s++) {
 			const stop = stops[s]
@@ -101,6 +103,7 @@ function getTotalArea(lines: ReturnType<typeof parseInput>) {
 			else waterStops.push(stop)
 		}
 		waterStops.sort((a, b) => a - b)
+		// Remove overlap of previous and new waterfalls
 		const newWaterRanges: Range[] = []
 		for (let w = 1; w < waterStops.length; w += 2) {
 			const range: Range = [waterStops[w - 1], waterStops[w]]
