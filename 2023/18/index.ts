@@ -63,7 +63,6 @@ function getTotalArea(lines: ReturnType<typeof parseInput>) {
 	const hStopsByY: Map<number, number[]> = new Map()
 	let x = 0
 	let y = 0
-	let startY = Infinity
 	for (const line of lines) {
 		const [dx, dy] = neighborXYs[line.dir]
 		const endX = x + dx * line.meters
@@ -79,10 +78,9 @@ function getTotalArea(lines: ReturnType<typeof parseInput>) {
 		}
 		x = endX
 		y = endY
-		if (y < startY) startY = y
 	}
-	let waterfallY = startY
 	const hLineYs = [...hStopsByY.keys()].sort((a, b) => a - b)
+	let waterfallY = hLineYs[0]
 	const waterStops: number[] = hStopsByY.get(hLineYs.shift()!)!
 	let totalArea = 0
 	let prevWaterRanges: Range[] = [[waterStops[0], waterStops[1]]]
@@ -105,17 +103,14 @@ function getTotalArea(lines: ReturnType<typeof parseInput>) {
 		waterStops.sort((a, b) => a - b)
 		const newWaterRanges: Range[] = []
 		for (let w = 1; w < waterStops.length; w += 2) {
-			newWaterRanges.push([waterStops[w - 1], waterStops[w]])
-		}
-		let totalOverlap = 0
-		for (const newWaterRange of newWaterRanges) {
+			const range: Range = [waterStops[w - 1], waterStops[w]]
+			newWaterRanges.push(range)
 			for (const prevWaterRange of prevWaterRanges) {
-				const a = newWaterRange[0] <= prevWaterRange[0] ? newWaterRange : prevWaterRange
-				const b = a === newWaterRange ? prevWaterRange : newWaterRange
-				totalOverlap += getOverlapWidth(a, b)
+				const a = range[0] <= prevWaterRange[0] ? range : prevWaterRange
+				const b = a === prevWaterRange ? range : prevWaterRange
+				totalArea -= getOverlapWidth(a, b)
 			}
 		}
-		totalArea -= totalOverlap
 		prevWaterRanges = newWaterRanges
 		waterfallY = hLineY
 	}
