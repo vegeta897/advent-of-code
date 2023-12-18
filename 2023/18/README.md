@@ -11,3 +11,7 @@ A lot of iteration went into reaching this final approach. I was doing all kinds
 So I'm really satisfied to have come up with and implemented my own algorithm despite it taking a while. I'm sure I would have reached for the shoelace formula if I knew about it, but I'm glad I didn't in retrospect.
 
 Rank #4984
+
+Here's a basic visualization of this approach:
+
+![Visualization of my "waterfall" approach to the problem](visualization.gif)
