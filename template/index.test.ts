@@ -13,7 +13,9 @@ test('solutions', () => {
 })
 
 function getAndLogAnswer(part: 1 | 2) {
+	console.time(`P${part}`)
 	const answer = `${(part === 1 ? getPart1Answer : getPart2Answer)(inputText)}`
+	console.timeEnd(`P${part}`)
 	logAnswer(import.meta.dir, part, answer)
 	return answer
 }
