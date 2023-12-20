@@ -11,7 +11,7 @@ export const getPart1Answer: Answer = (input: string): string | number => {
 export const part1Examples: Example[] = [[``, '']]
 
 export const getPart2Answer: Answer = (input: string): string | number => {
-	const parsed = parseInput(input)
+	// const parsed = parseInput(input)
 	return ''
 }
 
