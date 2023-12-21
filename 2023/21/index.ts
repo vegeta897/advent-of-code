@@ -23,29 +23,35 @@ const neighborXYs = [
 	[0, -1],
 ]
 const toGrid = (x: number, y: number) => `${x}:${y}`
-const toMemory = (x: number, y: number, stepsLeft: number) => `${x}:${y}:${stepsLeft}`
 
 function walk(
 	map: string[][],
 	xy: [number, number],
-	endPlots: Set<string>,
-	memory: Set<string>,
+	endPlots: Map<string, number>,
 	stepsLeft: number
 ) {
-	memory.add(toMemory(...xy, stepsLeft))
-	if (stepsLeft === 0) {
-		endPlots.add(toGrid(...xy))
-		return
-	}
 	for (let n = 0; n < 4; n++) {
 		const [nx, ny] = neighborXYs[n]
 		const toX = xy[0] + nx
 		const toY = xy[1] + ny
 		if (toX < 0 || toY < 0 || toX === map.length || toY === map.length) continue
 		if (map[toY][toX] !== '.') continue
-		if (memory.has(toMemory(toX, toY, stepsLeft - 1))) continue
-		walk(map, [toX, toY], endPlots, memory, stepsLeft - 1)
+		const nGrid = toGrid(toX, toY)
+		const nextStepsLeft = stepsLeft - 1
+		if (nextStepsLeft % 2 === 0) {
+			const endPlot = endPlots.get(nGrid)
+			if (endPlot !== undefined && endPlot >= nextStepsLeft) continue
+			endPlots.set(nGrid, nextStepsLeft)
+			if (nextStepsLeft === 0) continue
+		}
+		walk(map, [toX, toY], endPlots, nextStepsLeft)
 	}
+}
+
+function getPlots(map: string[][], xy: [number, number], steps: number) {
+	const endPlots: Map<string, number> = new Map()
+	walk(map, xy, endPlots, steps)
+	return endPlots.size
 }
 
 export const getPart1Answer: Answer = (input: string): string | number => {
@@ -70,13 +76,6 @@ export const part1Examples: Example[] = [
 		'16',
 	],
 ]
-
-function getPlots(map: string[][], xy: [number, number], steps: number) {
-	const endPlots: Set<string> = new Set()
-	const memory: Set<string> = new Set()
-	walk(map, xy, endPlots, memory, steps)
-	return endPlots.size
-}
 
 export const getPart2Answer: Answer = (input: string): string | number => {
 	const { map, size, startXY } = parseInput(input)
@@ -132,5 +131,4 @@ export const part2Examples: Example[] = [
 .....`,
 		'324',
 	],
-	/*[part1Examples[0][0], '1594']*/
 ]

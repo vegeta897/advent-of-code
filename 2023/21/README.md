@@ -8,4 +8,6 @@ It runs in just over 3 seconds, which is a tad slower than I'd like, but not slo
 
 There must be a formula for calculating the diamond shaped area covered by manhattan distances, but calculating it with a for loop takes almost no time.
 
+Update: I optimized the walk function a bit, which cut the run time in half. I could optimize further by re-using walks and filtering out plots based on the best step count.
+
 Rank #1765
