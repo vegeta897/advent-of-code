@@ -160,29 +160,20 @@ function findNodes(map: string[][]) {
 
 function findLongestPath(
 	nodes: Map<string, Map<string, number>>,
-	cache: Map<string, number>,
 	nodeGrid: string,
-	nodesVisited: Set<string>,
+	nodesVisited: string[],
 	endGrid: string
 ) {
-	// const cacheKey = `${[...nodesVisited].sort()}:${nodeGrid}`
-	// const cached = cache.get(cacheKey)
-	// if (cached) {
-	// 	// console.log('cache hit', cacheKey)
-	// 	return cached
-	// }
-	nodesVisited.add(nodeGrid)
 	if (nodeGrid === endGrid) return 0
+	nodesVisited.push(nodeGrid)
 	let longestPath: number = -Infinity
 	const node = nodes.get(nodeGrid)!
 	for (const [optionGrid, optionDistance] of node) {
-		if (nodesVisited.has(optionGrid)) continue
+		if (nodesVisited.includes(optionGrid)) continue
 		const optionPath =
-			optionDistance +
-			findLongestPath(nodes, cache, optionGrid, new Set([...nodesVisited]), endGrid)
+			optionDistance + findLongestPath(nodes, optionGrid, [...nodesVisited], endGrid)
 		if (optionPath > longestPath) longestPath = optionPath
 	}
-	// cache.set(cacheKey, longestPath)
 	return longestPath
 }
 
@@ -195,8 +186,7 @@ export const getPart2Answer: Answer = (input: string): string | number => {
 	firstNode[1].delete(startGrid)
 	const firstGrid = firstNode[0]
 	const endGrid = toGrid(map.length - 2, map.length - 1)
-	const longestPath =
-		initialDistance + findLongestPath(nodes, new Map(), firstGrid, new Set(), endGrid)
+	const longestPath = initialDistance + findLongestPath(nodes, firstGrid, [], endGrid)
 	return longestPath
 }
 
