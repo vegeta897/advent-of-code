@@ -10,10 +10,10 @@ const parseInput = (input: string) => {
 const sortByRules = (arr: number[], rules: number[][]) =>
 	arr.sort((a, b) => {
 		const followedRule = rules.find(([x, y]) => x === a && y === b)
+		if (followedRule) return -1
 		const violatedRule = rules.find(([x, y]) => y === a && x === b)
-		if (!violatedRule) return -1
-		if (!followedRule) return 0
-		return 1
+		if (violatedRule) return 1
+		return 0
 	})
 
 export const getPart1Answer: Answer = (input, example = false) => {
