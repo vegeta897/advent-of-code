@@ -3,34 +3,41 @@ const parseInput = (input: string): [number, number[]][] => {
 		.trim()
 		.split('\n')
 		.map((line) => {
-			const [resultS, factorsS] = line.split(': ')
-			return [+resultS, factorsS.split(' ').map((v) => +v)]
+			const [testValueString, numbersString] = line.split(': ')
+			return [+testValueString, numbersString.split(' ').map((v) => +v)]
 		})
+}
 
-	// .map((v) => +v)
+const solve = (
+	testValue: number,
+	currentValue: number,
+	remainingNumbers: number[],
+	allowConcat = false
+) => {
+	if (remainingNumbers.length === 0) return currentValue === testValue
+	const nextNumber = remainingNumbers.shift()!
+	const add = currentValue + nextNumber
+	const added =
+		add <= testValue && solve(testValue, add, [...remainingNumbers], allowConcat)
+	if (added) return true
+	const multiply = currentValue * nextNumber
+	const multiplied =
+		multiply <= testValue &&
+		solve(testValue, multiply, [...remainingNumbers], allowConcat)
+	if (multiplied) return true
+	if (allowConcat) {
+		const concat = currentValue * 10 ** nextNumber.toString().length + nextNumber
+		const concated =
+			concat <= testValue && solve(testValue, concat, [...remainingNumbers], true)
+		if (concated) return true
+	}
 }
 
 export const getPart1Answer: Answer = (input, example = false) => {
-	// if (!example) return 0
 	const parsed = parseInput(input)
 	let total = 0
-	for (const [result, factors] of parsed) {
-		for (let i = 0; i < 1 << (factors.length - 1); i++) {
-			let thisResult = factors[0]
-			for (let f = 1; f < factors.length; f++) {
-				const factor = factors[f]
-				const bit = i & (1 << (f - 1))
-				if (bit === 0) {
-					thisResult += factor
-				} else {
-					thisResult *= factor
-				}
-			}
-			if (thisResult === result) {
-				total += result
-				break
-			}
-		}
+	for (const [testValue, numbers] of parsed) {
+		if (solve(testValue, 0, numbers)) total += testValue
 	}
 	return total
 }
@@ -51,31 +58,10 @@ export const part1Examples: Example[] = [
 ]
 
 export const getPart2Answer: Answer = (input, example = false) => {
-	// if (!example) return 0
 	const parsed = parseInput(input)
 	let total = 0
-	for (const [result, factors] of parsed) {
-		for (let i = 0; i < (1 << (factors.length - 1)) << (factors.length - 1); i++) {
-			let thisResult = factors[0]
-			for (let f = 1; f < factors.length; f++) {
-				const factor = factors[f]
-				const concBit = i & ((1 << (f - 1)) << (factors.length - 1))
-				if (concBit !== 0) {
-					thisResult = +`${thisResult}${factor}`
-				} else {
-					const multAddBit = i & (1 << (f - 1))
-					if (multAddBit === 0) {
-						thisResult += factor
-					} else {
-						thisResult *= factor
-					}
-				}
-			}
-			if (thisResult === result) {
-				total += result
-				break
-			}
-		}
+	for (const [testValue, numbers] of parsed) {
+		if (solve(testValue, 0, numbers, true)) total += testValue
 	}
 	return total
 }
