@@ -17,4 +17,4 @@ export const getPart2Answer: Answer = (input, example = false) => {
 	return ''
 }
 
-export const part2Examples: Example[] = [[``, '']]
+export const part2Examples: Example[] = [[part1Examples[0][0], '']]
