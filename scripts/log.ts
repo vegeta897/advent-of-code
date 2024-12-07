@@ -1,5 +1,5 @@
 export async function logAnswer(path: string, part: 1 | 2, answer: string) {
-	if (!answer) return
+	if (!answer || answer === '0') return
 	let answerLog = await Bun.file(`${path}/answers.log`).text()
 	const loggedAnswers = answerLog
 		.split('\n')
