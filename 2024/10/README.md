@@ -1,0 +1,1 @@
+Interesting spin on pathfinding. I copied a function from last year, and ended up gutting it so much. There was no need for tracking visited grids or picking the best next grid at all. And for part 2, a recursive function made the most sense to me for counting the total possible paths.
