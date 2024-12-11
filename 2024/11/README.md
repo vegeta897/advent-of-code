@@ -1,0 +1,1 @@
+Wow this was a nightmare! I was on the right track fairly early, but it took me so long to figure out the key trick to simplifying the problem. There's a lot of weird cache stuff I'm doing here that is probably unnecessary. I'm calculating future splits but I could probably cut all of that out without impacting total calculation time.
