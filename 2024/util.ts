@@ -34,3 +34,19 @@ export const rotateXYCW = (x: number, y: number, turns: number): XY => {
 	if (turns === 1) return [-y, x]
 	return [y, -x]
 }
+
+export const inBounds = (position: XY, map: any[][]) =>
+	position[0] >= 0 &&
+	position[1] >= 0 &&
+	position[0] < map[0].length &&
+	position[1] < map.length
+
+// Rotate map 90 degrees clockwise (works with non-square maps)
+export const rotateMap = <T extends any>(map: T[][]) =>
+	map[0].map((_, x) => map.map((_, y) => map[map.length - 1 - y][x]))
+
+export const printMap = (map: any[][]) => {
+	for (const row of map) {
+		console.log(row.join(''))
+	}
+}

@@ -1,0 +1,1 @@
+This was pretty fun. I hit a speedbump in part 2 with a failed approach to edge detection before deciding on rotating the map to make things easier. Lost a few minutes scratching my head trying to remember how to rotate a map.
