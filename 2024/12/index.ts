@@ -1,4 +1,4 @@
-import { getNeighbors, inBounds, rotateMap, toGrid, toXY } from '../util'
+import { getNeighbors, inBounds, toGrid, toXY } from '../util'
 
 const parseInput = (input: string) => {
 	return input
@@ -91,31 +91,29 @@ export const getPart2Answer: Answer = (input, example = false) => {
 			regionAreas[nextRegionID] = area
 		}
 	}
-	const regionSides = regionAreas.map(() => 0)
-	let rotatedMap = regionMap
-	for (let r = 0; r < 4; r++) {
-		rotatedMap = rotateMap(rotatedMap)
-		for (let y = 0; y < rotatedMap.length; y++) {
-			let prevRegionID = 0
-			let prevContiguous = true
-			for (let x = 0; x < rotatedMap[0].length; x++) {
-				const above = y === 0 ? 0 : rotatedMap[y - 1][x]
-				const currentRegionID = rotatedMap[y][x]
-				const contiguous = above === currentRegionID
-				if (prevRegionID > 0 && !prevContiguous) {
-					if (contiguous || prevRegionID !== currentRegionID) {
-						regionSides[prevRegionID]++
-					}
-				}
-				prevRegionID = currentRegionID
-				prevContiguous = contiguous
+	const width = regionMap[0].length
+	const height = regionMap.length
+	const regionCorners = regionAreas.map(() => 0)
+	for (let y = 0; y <= height; y++) {
+		for (let x = 0; x <= width; x++) {
+			const tl = y === 0 || x === 0 ? 0 : regionMap[y - 1][x - 1]
+			const tr = y === 0 || x === width ? 0 : regionMap[y - 1][x]
+			const br = y === height || x === width ? 0 : regionMap[y][x]
+			const bl = y === height || x === 0 ? 0 : regionMap[y][x - 1]
+			const corners = [tl, tr, br, bl]
+			for (let c = 0; c < corners.length; c++) {
+				const root = corners[c]
+				const neighbors = [corners[(c + 3) % 4], corners[(c + 5) % 4]]
+				const opposite = corners[(c + 2) % 4]
+				const matchingNeighbors = neighbors.filter((n) => n === root)
+				if (matchingNeighbors.length === 2 && opposite !== root) regionCorners[root]++
+				if (matchingNeighbors.length === 0) regionCorners[root]++
 			}
-			if (!prevContiguous) regionSides[prevRegionID]++
 		}
 	}
 	let totalCost = 0
 	for (let i = 1; i < regionAreas.length; i++) {
-		totalCost += regionAreas[i] * regionSides[i]
+		totalCost += regionAreas[i] * regionCorners[i]
 	}
 	return totalCost
 }
