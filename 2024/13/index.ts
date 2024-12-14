@@ -1,4 +1,4 @@
-import { XY } from '../util'
+import { diffXY, divideXY, scaleXY, XY } from '../util'
 
 const parseInput = (input: string, part2 = false) => {
 	return input
@@ -20,14 +20,7 @@ const parseInput = (input: string, part2 = false) => {
 				.map((v) => +v.split('=')[1] + (part2 ? 10000000000000 : 0)) as XY
 			return { aXY, bXY, prizeXY }
 		})
-	// .map((v) => +v)
 }
-
-const scale = (xy: XY, f: number) => xy.map((v) => v * f) as XY
-const add = (a: XY, b: XY): XY => [a[0] + b[0], a[1] + b[1]]
-const diff = (a: XY, b: XY): XY => [a[0] - b[0], a[1] - b[1]]
-const multiply = (a: XY, b: XY): XY => [a[0] * b[0], a[1] * b[1]]
-const divide = (a: XY, b: XY): XY => [a[0] / b[0], a[1] / b[1]]
 
 const calcTokens = (a: number, b: number) => a * 3 + b
 
@@ -36,11 +29,10 @@ export const getPart1Answer: Answer = (input, example = false) => {
 	const parsed = parseInput(input)
 	let totalTokens = 0
 	for (const { aXY, bXY, prizeXY } of parsed) {
-		let lowestCost = Infinity
 		for (let a = 0; a <= MAX_BTN; a++) {
-			const aDistance = scale(aXY, a)
-			const remaining = diff(prizeXY, aDistance)
-			const bNeeded = divide(remaining, bXY)
+			const aDistance = scaleXY(aXY, a)
+			const remaining = diffXY(prizeXY, aDistance)
+			const bNeeded = divideXY(remaining, bXY)
 			if (
 				bNeeded[0] !== Math.floor(bNeeded[0]) ||
 				bNeeded[1] !== Math.floor(bNeeded[1]) ||
@@ -48,10 +40,9 @@ export const getPart1Answer: Answer = (input, example = false) => {
 			) {
 				continue
 			}
-			const cost = calcTokens(a, bNeeded[0])
-			if (cost < lowestCost) lowestCost = cost
+			totalTokens += calcTokens(a, bNeeded[0])
+			break
 		}
-		if (lowestCost !== Infinity) totalTokens += lowestCost
 	}
 	return totalTokens
 }
@@ -87,8 +78,8 @@ export const getPart2Answer: Answer = (input, example = false) => {
 		let lastMissRatio: number | null = null
 		let factor = 10000000000
 		while (attempts++ < 1000) {
-			const distance = scale(aXY, a)
-			const missedBy = diff(prizeXY, distance)
+			const distance = scaleXY(aXY, a)
+			const missedBy = diffXY(prizeXY, distance)
 			const missRatio = missedBy[0] / missedBy[1] - bRatio
 			if (missRatio === 0) {
 				const b = missedBy[0] / bXY[0]
