@@ -1,4 +1,4 @@
-import { addXY, printMap, scaleXY, XY } from '../util'
+import { addXY, moduloXY, printMap, scaleXY, XY } from '../util'
 
 const parseInput = (input: string, width: number, height: number) => {
 	return input
@@ -17,18 +17,16 @@ const parseInput = (input: string, width: number, height: number) => {
 }
 
 export const getPart1Answer: Answer = (input, example = false) => {
-	// if(!example) return 0
 	const width = example ? 11 : 101
 	const height = example ? 7 : 103
 	const parsed = parseInput(input, width, height)
 	const finalPositions = parsed.map(([position, velocity]) =>
 		addXY(position, scaleXY(velocity, 100))
 	)
-	let safety = 0
 	const quads = [0, 0, 0, 0]
 	for (const [x, y] of finalPositions) {
-		const realX = (x + width * 10000) % width
-		const realY = (y + height * 10000) % height
+		const realX = (x + width * 100) % width
+		const realY = (y + height * 100) % height
 		if (realX < Math.floor(width / 2)) {
 			if (realY < Math.floor(height / 2)) quads[0]++
 			else if (realY >= Math.ceil(height / 2)) quads[1]++
@@ -58,8 +56,6 @@ p=9,5 v=-3,-3`,
 	],
 ]
 
-const moduloXY = (a: XY, b: XY): XY => [a[0] % b[0], a[1] % b[1]]
-
 export const getPart2Answer: Answer = (input, example = false) => {
 	const width = 101
 	const height = 103
@@ -88,7 +84,7 @@ export const getPart2Answer: Answer = (input, example = false) => {
 		}
 	}
 	// Bun.write('2024/14/maps.log', bigMapString)
-	throw 'christmas tree not found!'
+	throw '404: christmas tree not found!'
 }
 
 export const part2Examples: Example[] = []

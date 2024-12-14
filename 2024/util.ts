@@ -32,6 +32,7 @@ export const addXY = (a: XY, b: XY): XY => [a[0] + b[0], a[1] + b[1]]
 export const diffXY = (a: XY, b: XY): XY => [a[0] - b[0], a[1] - b[1]]
 export const multiplyXY = (a: XY, b: XY): XY => [a[0] * b[0], a[1] * b[1]]
 export const divideXY = (a: XY, b: XY): XY => [a[0] / b[0], a[1] / b[1]]
+export const moduloXY = (a: XY, b: XY): XY => [a[0] % b[0], a[1] % b[1]]
 
 export const rotateXYCW = (x: number, y: number, turns: number): XY => {
 	turns %= 4
