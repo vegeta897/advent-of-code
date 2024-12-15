@@ -27,12 +27,14 @@ export const NEIGHBOR_XY_8WAY: XY[] = [
 export const getNeighbors = (x: number, y: number, ways: 4 | 8 = 4): XY[] =>
 	(ways === 4 ? NEIGHBOR_XY_4WAY : NEIGHBOR_XY_8WAY).map(([nx, ny]) => [x + nx, y + ny])
 
-export const scaleXY = (xy: XY, f: number) => xy.map((v) => v * f) as XY
+export const scaleXY = ([x, y]: XY, f: number): XY => [x * f, y * f]
 export const addXY = (a: XY, b: XY): XY => [a[0] + b[0], a[1] + b[1]]
 export const diffXY = (a: XY, b: XY): XY => [a[0] - b[0], a[1] - b[1]]
 export const multiplyXY = (a: XY, b: XY): XY => [a[0] * b[0], a[1] * b[1]]
 export const divideXY = (a: XY, b: XY): XY => [a[0] / b[0], a[1] / b[1]]
 export const moduloXY = (a: XY, b: XY): XY => [a[0] % b[0], a[1] % b[1]]
+export const flipXY = ([x, y]: XY): XY => [-x, -y]
+export const equalXY = (a: XY, b: XY) => a[0] === b[0] && a[1] === b[1]
 
 export const rotateXYCW = (x: number, y: number, turns: number): XY => {
 	turns %= 4
