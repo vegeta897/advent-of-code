@@ -9,6 +9,22 @@ export const DIRS: XY[] = [
 	[-1, 0],
 ]
 
+export enum Direction {
+	up = 0,
+	right = 1,
+	down = 2,
+	left = 3,
+}
+
+export const flipDir = (dir: Direction) =>
+	dir === Direction.up
+		? Direction.down
+		: dir === Direction.left
+			? Direction.right
+			: dir === Direction.down
+				? Direction.up
+				: Direction.left
+
 export const NEIGHBOR_XY_4WAY: XY[] = [
 	[0, -1],
 	[1, 0],

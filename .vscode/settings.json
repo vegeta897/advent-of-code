@@ -10,7 +10,7 @@
 	"editor.renderWhitespace": "trailing",
 	"prettier.prettierPath": "./node_modules/prettier/index.cjs",
 	"typescript.tsdk": "node_modules\\typescript\\lib",
-	"editor.defaultColorDecorators": true,
+	"editor.defaultColorDecorators": "auto",
 	"markdownlint.config": {
 		"default": true,
 		"MD026": { "punctuation": ".,;:。，；：！" },
