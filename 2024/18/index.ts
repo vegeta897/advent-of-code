@@ -72,7 +72,7 @@ function constructPath(start: string, end: PathTile) {
 	return path.reverse()
 }
 
-const buildMap = (size: number, initialBytes: XY[]) => {
+const buildMap = (size: number, initialBytes: XY[] = []) => {
 	return new Array(size)
 		.fill(0)
 		.map((_, y) =>
@@ -122,22 +122,64 @@ export const part1Examples: Example[] = [
 	],
 ]
 
+type Cluster = {
+	touchingNE: boolean
+	touchingSW: boolean
+	grids: Set<string>
+}
+
 export const getPart2Answer: Answer = (input, example = false) => {
 	const mapSize = example ? 7 : 71
-	const initialByteCount = example ? 12 : 1024
 	const bytes = parseInput(input)
-	const initialBytes = bytes.slice(0, initialByteCount)
-	const map = buildMap(mapSize, initialBytes)
-	let path: string[] = []
-	for (let i = initialByteCount; i < bytes.length; i++) {
+	const map = buildMap(mapSize)
+	const clusterMap: Map<string, Cluster> = new Map()
+	for (let i = 0; i < bytes.length; i++) {
 		const [byteX, byteY] = bytes[i]
 		map[byteY][byteX] = 1
 		const addedByteGrid = toGrid(byteX, byteY)
-		if (path.length > 0 && !path.includes(addedByteGrid)) {
-			continue
+		let touchingNE = false
+		let touchingSW = false
+		const touchingClusters: Set<Cluster> = new Set()
+		for (const [nx, ny] of getNeighbors(byteX, byteY, 8)) {
+			if (nx < 0 || ny === mapSize) {
+				touchingSW = true
+				continue
+			}
+			if (ny < 0 || nx === mapSize) {
+				touchingNE = true
+				continue
+			}
+			if (map[ny][nx] === 0) continue
+			const nGrid = toGrid(nx, ny)
+			const nCluster = clusterMap.get(nGrid)!
+			touchingClusters.add(nCluster)
+			nCluster.grids.add(addedByteGrid)
+			clusterMap.set(addedByteGrid, nCluster)
+			nCluster.touchingNE ||= touchingNE
+			nCluster.touchingSW ||= touchingSW
+			if (nCluster.touchingNE && nCluster.touchingSW) return `${byteX},${byteY}`
 		}
-		path = findPath(map, [0, 0], [mapSize - 1, mapSize - 1])
-		if (path.length === 0) return `${byteX},${byteY}`
+		if (touchingClusters.size === 0) {
+			const newCluster: Cluster = {
+				touchingNE,
+				touchingSW,
+				grids: new Set([addedByteGrid]),
+			}
+			touchingClusters.add(newCluster)
+			clusterMap.set(addedByteGrid, newCluster)
+		} else if (touchingClusters.size > 1) {
+			const combinedCluster: Cluster = { touchingNE, touchingSW, grids: new Set() }
+			for (const cluster of touchingClusters) {
+				combinedCluster.touchingNE ||= cluster.touchingNE
+				combinedCluster.touchingSW ||= cluster.touchingSW
+				if (combinedCluster.touchingNE && combinedCluster.touchingSW)
+					return `${byteX},${byteY}`
+				for (const grid of cluster.grids) {
+					combinedCluster.grids.add(grid)
+					clusterMap.set(grid, combinedCluster)
+				}
+			}
+		}
 	}
 	throw 'all paths valid?!'
 }

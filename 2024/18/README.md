@@ -3,3 +3,5 @@ Well this was unexpectedly easy. I might have stood a chance at a really nice ra
 I was expecting some temporal pathfinding action, like the snowstorm problem in a previous year. But this was totally static! Even before any optimization, part 2 ran in just over 4 seconds. With a single optimization, that cut down to 124ms!
 
 Then my AOC-buddy DoubleDonkey in the NXL server proposed an even simpler solution, so I'm going to rewrite using that after my initial commit.
+
+**Update:** Rewritten with super efficient byte cluster logic, and now it runs in only **8ms!**

@@ -66,6 +66,9 @@ export const inBounds = (position: XY, map: any[][]) =>
 	position[0] < map[0].length &&
 	position[1] < map.length
 
+export const createEmptyMap = <T extends any>(size: number) =>
+	new Array(size).fill(0).map(() => []) as T[][]
+
 // Rotate map 90 degrees clockwise (works with non-square maps)
 export const rotateMap = <T extends any>(map: T[][]) =>
 	map[0].map((_, x) => map.map((_, y) => map[map.length - 1 - y][x]))
