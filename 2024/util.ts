@@ -75,3 +75,11 @@ export const printMap = (map: any[][]) => {
 		console.log(row.join(''))
 	}
 }
+
+export const arraysEqual = (a: any[], b: any[]) => {
+	if (a.length !== b.length) return false
+	for (let i = 0; i < a.length; i++) {
+		if (a[i] !== b[i]) return false
+	}
+	return true
+}
