@@ -60,10 +60,8 @@ bbrgwb`,
 const countCache: Map<string, number> = new Map()
 
 const getDesignCount = (design: string, remaining: string, towels: string[]): number => {
-	const cachedPossible = possibleCache.get(remaining)
-	if (cachedPossible === false) return 0
 	const cachedCount = countCache.get(remaining)
-	if (cachedCount) return cachedCount
+	if (cachedCount !== undefined) return cachedCount
 	let count = 0
 	for (const towel of towels) {
 		if (towel.length > remaining.length) continue
@@ -77,14 +75,12 @@ const getDesignCount = (design: string, remaining: string, towels: string[]): nu
 			count += newWays
 		}
 	}
-	possibleCache.set(remaining, count > 0)
 	countCache.set(remaining, count)
 	return count
 }
 
 export const getPart2Answer: Answer = (input, example = false) => {
 	const { towels, designs } = parseInput(input)
-	possibleCache.clear()
 	countCache.clear()
 	let totalCount = 0
 	for (const design of designs) {
