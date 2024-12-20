@@ -94,7 +94,8 @@ const getShortcutCount = (map: number[][], start: XY, end: XY, noclipTime: numbe
 	let hundoSkips = 0
 	for (let t = 0; t < path.length; t++) {
 		const fromTile = path[t]
-		for (let tt = t + 4; tt < path.length; tt++) {
+		// 102 because time saved must be 100, plus minimum shortcut distance of 2
+		for (let tt = t + 102; tt < path.length; tt++) {
 			const toTile = path[tt]
 			const diff = diffXY(fromTile.xy, toTile.xy)
 			const distance = Math.abs(diff[0]) + Math.abs(diff[1])
