@@ -12,4 +12,8 @@ The test runner will then begin, in watch mode. Copy your puzzle input into `inp
 
 Answers will be logged to `answers.log` in the day folder, for your own reference. Duplicate answers will be ignored.
 
+## TODO
+
+Allow appending a,b,c to day
+
 _Repo structure inspired by [itswil's template](https://github.com/itswil/advent-of-code/)_
