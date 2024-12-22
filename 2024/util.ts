@@ -51,6 +51,7 @@ export const divideXY = (a: XY, b: XY): XY => [a[0] / b[0], a[1] / b[1]]
 export const moduloXY = (a: XY, b: XY): XY => [a[0] % b[0], a[1] % b[1]]
 export const flipXY = ([x, y]: XY): XY => [-x, -y]
 export const equalXY = (a: XY, b: XY) => a[0] === b[0] && a[1] === b[1]
+export const manhattanDistance = ([x, y]: XY) => Math.abs(x) + Math.abs(y)
 
 export const rotateXYCW = (x: number, y: number, turns: number): XY => {
 	turns %= 4
