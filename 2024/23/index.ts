@@ -81,6 +81,7 @@ export const getPart2Answer: Answer = (input, example = false) => {
 			const pc2Connections = connectionMap.get(pc2)!
 			const commonSet = pc2Connections.intersection(pc1Connections)
 			const common = [pc1, pc2, ...commonSet].sort()
+			if (common.length < largest.length) continue
 			let valid = true
 			for (const member of common) {
 				for (const otherMember of common) {
@@ -93,7 +94,7 @@ export const getPart2Answer: Answer = (input, example = false) => {
 				}
 				if (!valid) break
 			}
-			if (valid && common.length > largest.length) largest = common
+			if (valid) largest = common
 		}
 	}
 	return largest.join(',')
