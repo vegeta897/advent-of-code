@@ -1,0 +1,1 @@
+Not the strongest start to 2025! I think "wrapping numbers" is one of my weakest mental models. I had to brute force count one-by-one in part 2 to get a quicker answer than figuring out the real modulo solution. But I eventually did.
