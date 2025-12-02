@@ -1,0 +1,1 @@
+Pretty straightforward. Part 2 tripped me for a couple minutes but nothing like yesterday. After submitting I simplified my code to leverage `.repeat()` instead of walking through the ID piecemeal. Roughly the same performance, and nothing is coming to mind for optimizing this.
