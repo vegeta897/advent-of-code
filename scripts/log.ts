@@ -1,6 +1,8 @@
+import fs from 'node:fs/promises'
+
 export async function logAnswer(path: string, part: 1 | 2, answer: string) {
 	if (!answer || answer === '0') return
-	let answerLog = await Bun.file(`${path}/answers.log`).text()
+	let answerLog = await fs.readFile(`${path}/answers.log`, 'utf-8')
 	const loggedAnswers = answerLog
 		.split('\n')
 		.filter((line) => line)
@@ -17,5 +19,5 @@ export async function logAnswer(path: string, part: 1 | 2, answer: string) {
 		' ' +
 		now.toLocaleTimeString('en-us', { timeZone: 'EST' })
 	const logEntry = `${timestamp} | Part ${part} = ${answer}\n`
-	Bun.write(`${path}/answers.log`, answerLog + logEntry)
+	fs.writeFile(`${path}/answers.log`, answerLog + logEntry)
 }

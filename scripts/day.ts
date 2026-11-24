@@ -1,7 +1,8 @@
 // Create a new year/day folder if it doesn't already exist and start a test watcher
 
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import path from 'node:path'
+import { spawn } from 'node:child_process'
 
 function exitWithError(error: string) {
 	console.error(error)
@@ -29,17 +30,16 @@ const dayPath = path.join(`${year}`, dayPadded)
 
 // Create folder if it doesn't exist yet and copy files
 try {
-	fs.readdirSync(dayPath)
+	await fs.readdir(dayPath)
 } catch (_) {
 	console.log('Creating folder', dayPath)
-	const glob = new Bun.Glob('*')
-	for await (const fileName of glob.scan({ cwd: 'template' })) {
+	await fs.mkdir(dayPath, { recursive: true })
+	for await (const fileName of fs.glob('**/*.*', { cwd: 'template' })) {
 		console.log('Copying', fileName, 'to', dayPath)
-		const file = Bun.file(path.join('template', fileName))
-		await Bun.write(path.join(dayPath, fileName), file)
+		await fs.copyFile(path.join('template', fileName), path.join(dayPath, fileName))
 	}
 }
 
-Bun.spawn(['bun', 'test', '--watch', dayPath], {
-	stdio: ['inherit', 'inherit', 'inherit'], // Forward console logs
+spawn(`node`, ['--test', '--watch', `${dayPath}/index.test.ts`], {
+	stdio: 'inherit', // Forward console logs
 })

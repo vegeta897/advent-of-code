@@ -2,12 +2,15 @@
 	"name": "advent-of-code",
 	"module": "index.ts",
 	"devDependencies": {
-		"bun-types": "1.3.3",
+		"@types/node": "^26.6.6",
 		"prettier": "3.7.3",
 		"typescript": "5.9.3"
 	},
 	"scripts": {
-		"day": "bun scripts/day.ts"
+		"day": "node scripts/day.ts"
+	},
+	"imports": {
+		"#scripts/*.ts": "./scripts/*.ts"
 	},
 	"type": "module"
 }

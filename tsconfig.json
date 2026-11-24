@@ -1,9 +1,11 @@
 {
 	"compilerOptions": {
-		"lib": ["ESNext"],
-		"module": "esnext",
+		"lib": [
+			"ESNext"
+		],
+		"module": "NodeNext",
 		"target": "esnext",
-		"moduleResolution": "bundler",
+		"moduleResolution": "nodenext",
 		"moduleDetection": "force",
 		"allowImportingTsExtensions": true,
 		"noEmit": true,
@@ -16,11 +18,10 @@
 		"forceConsistentCasingInFileNames": true,
 		"allowJs": true,
 		"types": [
-			"bun-types", // add Bun global,
+			"node",
 			"./types"
 		],
-		"paths": {
-			"@scripts/*": ["./scripts/*"]
-		}
+		"erasableSyntaxOnly": true,
+		"paths": {}
 	}
 }
